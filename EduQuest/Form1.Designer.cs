@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             lblTitle = new Label();
             lblSubtitle = new Label();
             goldLine = new Panel();
@@ -38,7 +39,16 @@
             lblDifficulty = new Label();
             cboCategory = new ComboBox();
             lblCategory = new Label();
+            pnlQuiz = new Panel();
+            lblTimer = new Label();
+            btnD = new Button();
+            btnB = new Button();
+            btnC = new Button();
+            btnA = new Button();
+            lblQuestion = new Label();
+            quizTimer = new System.Windows.Forms.Timer(components);
             pnlSetup.SuspendLayout();
+            pnlQuiz.SuspendLayout();
             SuspendLayout();
             // 
             // lblTitle
@@ -98,7 +108,6 @@
             pnlSetup.Size = new Size(500, 200);
             pnlSetup.TabIndex = 4;
             pnlSetup.Visible = false;
-            pnlSetup.Paint += pnlSetup_Paint;
             // 
             // btnStart
             // 
@@ -142,7 +151,7 @@
             cboCategory.DropDownStyle = ComboBoxStyle.DropDownList;
             cboCategory.Font = new Font("Georgia", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             cboCategory.FormattingEnabled = true;
-            cboCategory.Items.AddRange(new object[] { "   Mathematics", "   English Grammar", "   General Knowledge" });
+            cboCategory.Items.AddRange(new object[] { "Mathematics", "English Grammar", "General Knowledge" });
             cboCategory.Location = new Point(20, 35);
             cboCategory.Name = "cboCategory";
             cboCategory.Size = new Size(460, 26);
@@ -159,12 +168,110 @@
             lblCategory.TabIndex = 0;
             lblCategory.Text = "Choose your category";
             // 
+            // pnlQuiz
+            // 
+            pnlQuiz.Controls.Add(lblTimer);
+            pnlQuiz.Controls.Add(btnD);
+            pnlQuiz.Controls.Add(btnB);
+            pnlQuiz.Controls.Add(btnC);
+            pnlQuiz.Controls.Add(btnA);
+            pnlQuiz.Controls.Add(lblQuestion);
+            pnlQuiz.Location = new Point(50, 140);
+            pnlQuiz.Name = "pnlQuiz";
+            pnlQuiz.Size = new Size(600, 330);
+            pnlQuiz.TabIndex = 5;
+            pnlQuiz.Visible = false;
+            // 
+            // lblTimer
+            // 
+            lblTimer.Font = new Font("Georgia", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblTimer.ForeColor = Color.FromArgb(230, 190, 80);
+            lblTimer.Location = new Point(20, 285);
+            lblTimer.Name = "lblTimer";
+            lblTimer.Size = new Size(560, 35);
+            lblTimer.TabIndex = 5;
+            lblTimer.Text = "Time: 15";
+            lblTimer.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // btnD
+            // 
+            btnD.BackColor = Color.FromArgb(245, 230, 200);
+            btnD.Cursor = Cursors.Hand;
+            btnD.FlatStyle = FlatStyle.Flat;
+            btnD.Font = new Font("Georgia", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnD.ForeColor = Color.FromArgb(25, 20, 45);
+            btnD.Location = new Point(304, 212);
+            btnD.Name = "btnD";
+            btnD.Size = new Size(270, 60);
+            btnD.TabIndex = 4;
+            btnD.Text = "Answer D";
+            btnD.UseVisualStyleBackColor = false;
+            // 
+            // btnB
+            // 
+            btnB.BackColor = Color.FromArgb(245, 230, 200);
+            btnB.Cursor = Cursors.Hand;
+            btnB.FlatStyle = FlatStyle.Flat;
+            btnB.Font = new Font("Georgia", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnB.ForeColor = Color.FromArgb(25, 20, 45);
+            btnB.Location = new Point(304, 130);
+            btnB.Name = "btnB";
+            btnB.Size = new Size(270, 60);
+            btnB.TabIndex = 3;
+            btnB.Text = "Answer B";
+            btnB.UseVisualStyleBackColor = false;
+            // 
+            // btnC
+            // 
+            btnC.BackColor = Color.FromArgb(245, 230, 200);
+            btnC.Cursor = Cursors.Hand;
+            btnC.FlatStyle = FlatStyle.Flat;
+            btnC.Font = new Font("Georgia", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnC.ForeColor = Color.FromArgb(25, 20, 45);
+            btnC.Location = new Point(20, 210);
+            btnC.Name = "btnC";
+            btnC.Size = new Size(270, 60);
+            btnC.TabIndex = 2;
+            btnC.Text = "Answer C";
+            btnC.UseVisualStyleBackColor = false;
+            // 
+            // btnA
+            // 
+            btnA.BackColor = Color.FromArgb(245, 230, 200);
+            btnA.Cursor = Cursors.Hand;
+            btnA.FlatStyle = FlatStyle.Flat;
+            btnA.Font = new Font("Georgia", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnA.ForeColor = Color.FromArgb(25, 20, 45);
+            btnA.Location = new Point(20, 130);
+            btnA.Name = "btnA";
+            btnA.Size = new Size(270, 60);
+            btnA.TabIndex = 1;
+            btnA.Text = "Answer A";
+            btnA.UseVisualStyleBackColor = false;
+            // 
+            // lblQuestion
+            // 
+            lblQuestion.Font = new Font("Georgia", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblQuestion.ForeColor = Color.FromArgb(245, 230, 200);
+            lblQuestion.Location = new Point(20, 20);
+            lblQuestion.Name = "lblQuestion";
+            lblQuestion.Size = new Size(560, 80);
+            lblQuestion.TabIndex = 0;
+            lblQuestion.Text = "Sample question goes here";
+            lblQuestion.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // quizTimer
+            // 
+            quizTimer.Interval = 1000;
+            quizTimer.Tick += quizTimer_Tick;
+            // 
             // EduQuest
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(25, 20, 45);
             ClientSize = new Size(700, 480);
+            Controls.Add(pnlQuiz);
             Controls.Add(pnlSetup);
             Controls.Add(btnPlay);
             Controls.Add(goldLine);
@@ -177,6 +284,7 @@
             Text = "Form1";
             pnlSetup.ResumeLayout(false);
             pnlSetup.PerformLayout();
+            pnlQuiz.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -192,5 +300,13 @@
         private ComboBox cboDifficulty;
         private Label lblDifficulty;
         private Button btnStart;
+        private Panel pnlQuiz;
+        private Label lblQuestion;
+        private Button btnA;
+        private Button btnD;
+        private Button btnB;
+        private Button btnC;
+        private Label lblTimer;
+        private System.Windows.Forms.Timer quizTimer;
     }
 }
