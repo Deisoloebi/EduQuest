@@ -47,8 +47,14 @@
             btnA = new Button();
             lblQuestion = new Label();
             quizTimer = new System.Windows.Forms.Timer(components);
+            pnlMenu = new Panel();
+            btnMenuExit = new Button();
+            btnMenuMakeQuiz = new Button();
+            btnMenuStartQuiz = new Button();
+            nextTimer = new System.Windows.Forms.Timer(components);
             pnlSetup.SuspendLayout();
             pnlQuiz.SuspendLayout();
+            pnlMenu.SuspendLayout();
             SuspendLayout();
             // 
             // lblTitle
@@ -206,6 +212,7 @@
             btnD.TabIndex = 4;
             btnD.Text = "Answer D";
             btnD.UseVisualStyleBackColor = false;
+            btnD.Click += AnswerButton_Click;
             // 
             // btnB
             // 
@@ -220,6 +227,7 @@
             btnB.TabIndex = 3;
             btnB.Text = "Answer B";
             btnB.UseVisualStyleBackColor = false;
+            btnB.Click += AnswerButton_Click;
             // 
             // btnC
             // 
@@ -234,6 +242,7 @@
             btnC.TabIndex = 2;
             btnC.Text = "Answer C";
             btnC.UseVisualStyleBackColor = false;
+            btnC.Click += AnswerButton_Click;
             // 
             // btnA
             // 
@@ -248,6 +257,7 @@
             btnA.TabIndex = 1;
             btnA.Text = "Answer A";
             btnA.UseVisualStyleBackColor = false;
+            btnA.Click += AnswerButton_Click;
             // 
             // lblQuestion
             // 
@@ -265,12 +275,73 @@
             quizTimer.Interval = 1000;
             quizTimer.Tick += quizTimer_Tick;
             // 
+            // pnlMenu
+            // 
+            pnlMenu.Controls.Add(btnMenuExit);
+            pnlMenu.Controls.Add(btnMenuMakeQuiz);
+            pnlMenu.Controls.Add(btnMenuStartQuiz);
+            pnlMenu.Location = new Point(100, 150);
+            pnlMenu.Name = "pnlMenu";
+            pnlMenu.Size = new Size(500, 250);
+            pnlMenu.TabIndex = 6;
+            pnlMenu.Visible = false;
+            // 
+            // btnMenuExit
+            // 
+            btnMenuExit.BackColor = Color.FromArgb(230, 190, 80);
+            btnMenuExit.Cursor = Cursors.Hand;
+            btnMenuExit.FlatStyle = FlatStyle.Flat;
+            btnMenuExit.Font = new Font("Georgia", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnMenuExit.ForeColor = Color.FromArgb(25, 20, 45);
+            btnMenuExit.Location = new Point(100, 163);
+            btnMenuExit.Name = "btnMenuExit";
+            btnMenuExit.Size = new Size(300, 55);
+            btnMenuExit.TabIndex = 2;
+            btnMenuExit.Text = "EXIT";
+            btnMenuExit.UseVisualStyleBackColor = false;
+            btnMenuExit.Click += btnMenuExit_Click;
+            // 
+            // btnMenuMakeQuiz
+            // 
+            btnMenuMakeQuiz.BackColor = Color.FromArgb(230, 190, 80);
+            btnMenuMakeQuiz.Cursor = Cursors.Hand;
+            btnMenuMakeQuiz.FlatStyle = FlatStyle.Flat;
+            btnMenuMakeQuiz.Font = new Font("Georgia", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnMenuMakeQuiz.ForeColor = Color.FromArgb(25, 20, 45);
+            btnMenuMakeQuiz.Location = new Point(100, 98);
+            btnMenuMakeQuiz.Name = "btnMenuMakeQuiz";
+            btnMenuMakeQuiz.Size = new Size(300, 55);
+            btnMenuMakeQuiz.TabIndex = 1;
+            btnMenuMakeQuiz.Text = "MAKE QUIZ";
+            btnMenuMakeQuiz.UseVisualStyleBackColor = false;
+            // 
+            // btnMenuStartQuiz
+            // 
+            btnMenuStartQuiz.BackColor = Color.FromArgb(230, 190, 80);
+            btnMenuStartQuiz.Cursor = Cursors.Hand;
+            btnMenuStartQuiz.FlatStyle = FlatStyle.Flat;
+            btnMenuStartQuiz.Font = new Font("Georgia", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnMenuStartQuiz.ForeColor = Color.FromArgb(25, 20, 45);
+            btnMenuStartQuiz.Location = new Point(100, 30);
+            btnMenuStartQuiz.Name = "btnMenuStartQuiz";
+            btnMenuStartQuiz.Size = new Size(300, 55);
+            btnMenuStartQuiz.TabIndex = 0;
+            btnMenuStartQuiz.Text = "START QUIZ";
+            btnMenuStartQuiz.UseVisualStyleBackColor = false;
+            btnMenuStartQuiz.Click += btnMenuStartQuiz_Click;
+            // 
+            // nextTimer
+            // 
+            nextTimer.Interval = 2000;
+            nextTimer.Tick += nextTimer_Tick;
+            // 
             // EduQuest
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(25, 20, 45);
             ClientSize = new Size(700, 480);
+            Controls.Add(pnlMenu);
             Controls.Add(pnlQuiz);
             Controls.Add(pnlSetup);
             Controls.Add(btnPlay);
@@ -285,6 +356,7 @@
             pnlSetup.ResumeLayout(false);
             pnlSetup.PerformLayout();
             pnlQuiz.ResumeLayout(false);
+            pnlMenu.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -308,5 +380,10 @@
         private Button btnC;
         private Label lblTimer;
         private System.Windows.Forms.Timer quizTimer;
+        private Panel pnlMenu;
+        private Button btnMenuStartQuiz;
+        private Button btnMenuExit;
+        private Button btnMenuMakeQuiz;
+        private System.Windows.Forms.Timer nextTimer;
     }
 }
