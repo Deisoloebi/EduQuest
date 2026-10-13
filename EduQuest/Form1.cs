@@ -9,6 +9,9 @@ namespace EduQuest
             // Naka-default yung choices para hindi empty (index 0)
             cboCategory.SelectedIndex = 0;
             cboDifficulty.SelectedIndex = 0;
+
+            // Center the game as soon as the window opens
+            CenterMainPanel();
         }
 
         /* These are "fields": variables that belong to the whole form,
@@ -39,6 +42,21 @@ namespace EduQuest
                 D = d;
                 Answer = answer;
             }
+
+        }
+
+        // Keeps the whole game (pnlMain) in the middle of the window,
+        // no matter how big the window is.
+        private void CenterMainPanel()
+        {
+            // ClientSize is the usable area inside the window.
+            // Subtract the panel's size, then split the leftover space in half
+            // so there is an equal gap on each side.
+            int x = (ClientSize.Width - pnlMain.Width) / 2;
+            int y = (ClientSize.Height - pnlMain.Height) / 2;
+
+            // Move the panel to that spot
+            pnlMain.Location = new Point(x, y);
         }
 
         // A List holds many items. This one holds all the questions of the quiz.
@@ -125,15 +143,65 @@ namespace EduQuest
             // A new quiz starts: reset the score, fill the question list,
             // and begin at the first question (counting starts at 0).
             score = 0;
+            correctCount = 0;
             LoadQuestions();
             currentQuestion = 0;
 
             // Show the first question on the screen
             ShowQuestion();
         }
+        private int correctCount = 0;  // how many questions the player got right
 
 
+        // Works out the results and shows the results screen.
+        private void ShowResults()
+        {
+            // Hide the quiz screen
+            pnlQuiz.Visible = false;
 
+            // Percentage = correct answers divided by total questions, times 100.
+            // (double) keeps the decimals. Without it, 3 / 5 would become 0.
+            double percent = (double)correctCount / questions.Count * 100;
+
+            // Just for fun: 0% gives an "IQ" of 70, and 100% gives 130
+            int funIQ = 70 + (int)(percent * 0.6);
+
+            // Pick a rank. C# checks these from the top and stops at the first match.
+            string rank;
+            if (percent >= 90)
+            {
+                rank = "ARCHMAGE";
+            }
+            else if (percent >= 75)
+            {
+                rank = "SAGE";
+            }
+            else if (percent >= 60)
+            {
+                rank = "KNIGHT";
+            }
+            else if (percent >= 40)
+            {
+                rank = "APPRENTICE";
+            }
+            else
+            {
+                rank = "NOVICE";
+            }
+
+            // Put the results on the screen.
+            // percent.ToString("0") shows 80 and not 80.0000.
+            lblScore.Text = "Score: " + score;
+            lblPercent.Text = "Percentage: " + percent.ToString("0") + "%";
+            lblFunIQ.Text = "Fun IQ: " + funIQ;
+            lblRank.Text = rank;
+
+            // Show the results panel in its spot
+            pnlResults.Location = new Point(50, 140);
+            pnlResults.Visible = true;
+            // "\n" starts a new line, so the disclaimer fits on two lines
+            lblDisclaimer.Text = "For entertainment and interactive purposes only.\nResults are not an actual measure of intelligence, IQ, or overall knowledge.";
+        }
 
 
         // This one puts a question and its four answers on the screen.
@@ -222,6 +290,7 @@ namespace EduQuest
                 // 100 points for being right, plus 2 for every second left.
                 int points = 100 + (timeLeft * 2);
                 score = score + points;
+                correctCount = correctCount + 1;
                 lblTimer.Text = "Correct! +" + points + " points";
             }
             else
@@ -258,9 +327,24 @@ namespace EduQuest
             {
                 // No questions left. The real results screen comes in the next step.
                 quizTimer.Stop();
-                lblQuestion.Text = "Quest complete!";
-                lblTimer.Text = "Total score: " + score;
+                ShowResults();
             }
+        }
+
+        private void EduQuest_Resize(object sender, EventArgs e)
+        {
+            // The window just changed size, so re-center the game
+            CenterMainPanel();
+        }
+
+        private void btnPlayAgain_Click(object sender, EventArgs e)
+        {
+            // Hide the results screen
+            pnlResults.Visible = false;
+
+            // Go back to the menu, so the player can start a new quiz
+            pnlMenu.Location = new Point(100, 150);
+            pnlMenu.Visible = true;
         }
     }
 }

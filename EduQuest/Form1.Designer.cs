@@ -53,9 +53,19 @@
             btnMenuStartQuiz = new Button();
             nextTimer = new System.Windows.Forms.Timer(components);
             pnlMain = new Panel();
+            pnlResults = new Panel();
+            btnPlayAgain = new Button();
+            lblDisclaimer = new Label();
+            lblFunIQ = new Label();
+            lblPercent = new Label();
+            lblScore = new Label();
+            lblRank = new Label();
+            lblResultTitle = new Label();
             pnlSetup.SuspendLayout();
             pnlQuiz.SuspendLayout();
             pnlMenu.SuspendLayout();
+            pnlMain.SuspendLayout();
+            pnlResults.SuspendLayout();
             SuspendLayout();
             // 
             // lblTitle
@@ -338,10 +348,114 @@
             // 
             // pnlMain
             // 
+            pnlMain.Controls.Add(pnlResults);
+            pnlMain.Controls.Add(lblTitle);
+            pnlMain.Controls.Add(lblSubtitle);
+            pnlMain.Controls.Add(goldLine);
+            pnlMain.Controls.Add(btnPlay);
+            pnlMain.Controls.Add(pnlQuiz);
+            pnlMain.Controls.Add(pnlMenu);
+            pnlMain.Controls.Add(pnlSetup);
             pnlMain.Location = new Point(0, 0);
             pnlMain.Name = "pnlMain";
             pnlMain.Size = new Size(700, 480);
             pnlMain.TabIndex = 7;
+            // 
+            // pnlResults
+            // 
+            pnlResults.Controls.Add(btnPlayAgain);
+            pnlResults.Controls.Add(lblDisclaimer);
+            pnlResults.Controls.Add(lblFunIQ);
+            pnlResults.Controls.Add(lblPercent);
+            pnlResults.Controls.Add(lblScore);
+            pnlResults.Controls.Add(lblRank);
+            pnlResults.Controls.Add(lblResultTitle);
+            pnlResults.Location = new Point(50, 140);
+            pnlResults.Name = "pnlResults";
+            pnlResults.Size = new Size(600, 330);
+            pnlResults.TabIndex = 7;
+            pnlResults.Visible = false;
+            // 
+            // btnPlayAgain
+            // 
+            btnPlayAgain.BackColor = Color.FromArgb(230, 190, 80);
+            btnPlayAgain.Cursor = Cursors.Hand;
+            btnPlayAgain.Font = new Font("Georgia", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnPlayAgain.ForeColor = Color.FromArgb(25, 20, 45);
+            btnPlayAgain.Location = new Point(200, 265);
+            btnPlayAgain.Name = "btnPlayAgain";
+            btnPlayAgain.Size = new Size(200, 50);
+            btnPlayAgain.TabIndex = 6;
+            btnPlayAgain.Text = "PLAY AGAIN";
+            btnPlayAgain.UseVisualStyleBackColor = false;
+            btnPlayAgain.Click += btnPlayAgain_Click;
+            // 
+            // lblDisclaimer
+            // 
+            lblDisclaimer.AutoSize = true;
+            lblDisclaimer.Font = new Font("Georgia", 9.75F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            lblDisclaimer.ForeColor = Color.FromArgb(245, 230, 200);
+            lblDisclaimer.Location = new Point(20, 205);
+            lblDisclaimer.Name = "lblDisclaimer";
+            lblDisclaimer.Size = new Size(789, 16);
+            lblDisclaimer.TabIndex = 5;
+            lblDisclaimer.Text = "For entertainment and interactive purposes only. Results are not an actual measure of intelligence, IQ, or overall knowledge.";
+            lblDisclaimer.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // lblFunIQ
+            // 
+            lblFunIQ.Font = new Font("Georgia", 12.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblFunIQ.ForeColor = Color.FromArgb(245, 230, 200);
+            lblFunIQ.Location = new Point(400, 130);
+            lblFunIQ.Name = "lblFunIQ";
+            lblFunIQ.Size = new Size(180, 50);
+            lblFunIQ.TabIndex = 4;
+            lblFunIQ.Text = "Fun IQ: 100";
+            lblFunIQ.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // lblPercent
+            // 
+            lblPercent.Font = new Font("Georgia", 12.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblPercent.ForeColor = Color.FromArgb(245, 230, 200);
+            lblPercent.Location = new Point(210, 130);
+            lblPercent.Name = "lblPercent";
+            lblPercent.Size = new Size(180, 50);
+            lblPercent.TabIndex = 3;
+            lblPercent.Text = "Percentage: 0%";
+            lblPercent.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // lblScore
+            // 
+            lblScore.Font = new Font("Georgia", 12.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblScore.ForeColor = Color.FromArgb(245, 230, 200);
+            lblScore.Location = new Point(20, 130);
+            lblScore.Name = "lblScore";
+            lblScore.Size = new Size(180, 50);
+            lblScore.TabIndex = 2;
+            lblScore.Text = "Score: 0";
+            lblScore.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // lblRank
+            // 
+            lblRank.Font = new Font("Georgia", 27.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblRank.ForeColor = Color.FromArgb(230, 190, 80);
+            lblRank.Location = new Point(20, 55);
+            lblRank.Name = "lblRank";
+            lblRank.Size = new Size(560, 55);
+            lblRank.TabIndex = 1;
+            lblRank.Text = "SAGE";
+            lblRank.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // lblResultTitle
+            // 
+            lblResultTitle.Font = new Font("Georgia", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblResultTitle.ForeColor = Color.FromArgb(230, 190, 80);
+            lblResultTitle.Location = new Point(20, 5);
+            lblResultTitle.Name = "lblResultTitle";
+            lblResultTitle.Size = new Size(560, 40);
+            lblResultTitle.TabIndex = 0;
+            lblResultTitle.Text = "Quest Complete!";
+            lblResultTitle.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // EduQuest
             // 
@@ -350,20 +464,17 @@
             BackColor = Color.FromArgb(25, 20, 45);
             ClientSize = new Size(714, 501);
             Controls.Add(pnlMain);
-            Controls.Add(pnlMenu);
-            Controls.Add(pnlQuiz);
-            Controls.Add(pnlSetup);
-            Controls.Add(btnPlay);
-            Controls.Add(goldLine);
-            Controls.Add(lblSubtitle);
-            Controls.Add(lblTitle);
             Name = "EduQuest";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Form1";
+            Resize += EduQuest_Resize;
             pnlSetup.ResumeLayout(false);
             pnlSetup.PerformLayout();
             pnlQuiz.ResumeLayout(false);
             pnlMenu.ResumeLayout(false);
+            pnlMain.ResumeLayout(false);
+            pnlResults.ResumeLayout(false);
+            pnlResults.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -393,5 +504,13 @@
         private Button btnMenuMakeQuiz;
         private System.Windows.Forms.Timer nextTimer;
         private Panel pnlMain;
+        private Panel pnlResults;
+        private Label lblRank;
+        private Label lblResultTitle;
+        private Label lblScore;
+        private Label lblDisclaimer;
+        private Label lblFunIQ;
+        private Label lblPercent;
+        private Button btnPlayAgain;
     }
 }
