@@ -154,54 +154,7 @@ namespace EduQuest
 
 
         // Works out the results and shows the results screen.
-        private void ShowResults()
-        {
-            // Hide the quiz screen
-            pnlQuiz.Visible = false;
-
-            // Percentage = correct answers divided by total questions, times 100.
-            // (double) keeps the decimals. Without it, 3 / 5 would become 0.
-            double percent = (double)correctCount / questions.Count * 100;
-
-            // Just for fun: 0% gives an "IQ" of 70, and 100% gives 130
-            int funIQ = 70 + (int)(percent * 0.6);
-
-            // Pick a rank. C# checks these from the top and stops at the first match.
-            string rank;
-            if (percent >= 90)
-            {
-                rank = "ARCHMAGE";
-            }
-            else if (percent >= 75)
-            {
-                rank = "SAGE";
-            }
-            else if (percent >= 60)
-            {
-                rank = "KNIGHT";
-            }
-            else if (percent >= 40)
-            {
-                rank = "APPRENTICE";
-            }
-            else
-            {
-                rank = "NOVICE";
-            }
-
-            // Put the results on the screen.
-            // percent.ToString("0") shows 80 and not 80.0000.
-            lblScore.Text = "Score: " + score;
-            lblPercent.Text = "Percentage: " + percent.ToString("0") + "%";
-            lblFunIQ.Text = "Fun IQ: " + funIQ;
-            lblRank.Text = rank;
-
-            // Show the results panel in its spot
-            pnlResults.Location = new Point(50, 140);
-            pnlResults.Visible = true;
-            // "\n" starts a new line, so the disclaimer fits on two lines
-            lblDisclaimer.Text = "For entertainment and interactive purposes only.\nResults are not an actual measure of intelligence, IQ, or overall knowledge.";
-        }
+        
 
 
         // This one puts a question and its four answers on the screen.
@@ -345,6 +298,55 @@ namespace EduQuest
             // Go back to the menu, so the player can start a new quiz
             pnlMenu.Location = new Point(100, 150);
             pnlMenu.Visible = true;
+        }
+
+        private void ShowResults()
+        {
+            // Hide the quiz screen
+            pnlQuiz.Visible = false;
+
+            // Percentage = correct answers divided by total questions, times 100.
+            // (double) keeps the decimals. Without it, 3 / 5 would become 0.
+            double percent = (double)correctCount / questions.Count * 100;
+
+            // Just for fun: 0% gives an "IQ" of 70, and 100% gives 130
+            int funIQ = 70 + (int)(percent * 0.6);
+
+            // Pick a rank. C# checks these from the top and stops at the first match.
+            string rank;
+            if (percent >= 90)
+            {
+                rank = "ARCHMAGE";
+            }
+            else if (percent >= 75)
+            {
+                rank = "SAGE";
+            }
+            else if (percent >= 60)
+            {
+                rank = "KNIGHT";
+            }
+            else if (percent >= 40)
+            {
+                rank = "APPRENTICE";
+            }
+            else
+            {
+                rank = "NOVICE";
+            }
+
+            // Put the results on the screen.
+            // percent.ToString("0") shows 80 and not 80.0000.
+            lblScore.Text = "Score: " + score;
+            lblPercent.Text = "Percentage: " + percent.ToString("0") + "%";
+            lblFunIQ.Text = "Fun IQ: " + funIQ;
+            lblRank.Text = rank;
+
+            // Show the results panel in its spot
+            pnlResults.Location = new Point(50, 140);
+            pnlResults.Visible = true;
+            // "\n" starts a new line, so the disclaimer fits on two lines
+            lblDisclaimer.Text = "For entertainment and interactive purposes only.\nResults are not an actual measure of intelligence, IQ, or overall knowledge.";
         }
     }
 }
