@@ -52,6 +52,7 @@
             btnMenuMakeQuiz = new Button();
             btnMenuStartQuiz = new Button();
             nextTimer = new System.Windows.Forms.Timer(components);
+            pnlMain = new Panel();
             pnlSetup.SuspendLayout();
             pnlQuiz.SuspendLayout();
             pnlMenu.SuspendLayout();
@@ -335,12 +336,20 @@
             nextTimer.Interval = 2000;
             nextTimer.Tick += nextTimer_Tick;
             // 
+            // pnlMain
+            // 
+            pnlMain.Location = new Point(0, 0);
+            pnlMain.Name = "pnlMain";
+            pnlMain.Size = new Size(700, 480);
+            pnlMain.TabIndex = 7;
+            // 
             // EduQuest
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(25, 20, 45);
-            ClientSize = new Size(700, 480);
+            ClientSize = new Size(714, 501);
+            Controls.Add(pnlMain);
             Controls.Add(pnlMenu);
             Controls.Add(pnlQuiz);
             Controls.Add(pnlSetup);
@@ -348,8 +357,6 @@
             Controls.Add(goldLine);
             Controls.Add(lblSubtitle);
             Controls.Add(lblTitle);
-            FormBorderStyle = FormBorderStyle.FixedDialog;
-            MaximizeBox = false;
             Name = "EduQuest";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Form1";
@@ -385,5 +392,6 @@
         private Button btnMenuExit;
         private Button btnMenuMakeQuiz;
         private System.Windows.Forms.Timer nextTimer;
+        private Panel pnlMain;
     }
 }
