@@ -2,26 +2,12 @@ namespace EduQuest
 {
     public partial class EduQuest : Form
     {
-        public EduQuest()
-        {
-            InitializeComponent();
+        // =====================================================================
+        #region Question data
+        // Everything about the questions themselves lives in this group.
+        // =====================================================================
 
-            // Naka-default yung choices para hindi empty (index 0)
-            cboCategory.SelectedIndex = 0;
-            cboDifficulty.SelectedIndex = 0;
-
-            // Center the game as soon as the window opens
-            CenterMainPanel();
-        }
-
-        /* These are "fields": variables that belong to the whole form,
-           so every method below can read and change them. */
-        private int secondsPerQuestion;  // how many seconds each question gets
-        private int timeLeft;            // how many seconds are left right now
-
-        private string correctAnswer;  // the right answer for the question on screen
-        private int score = 0;         // the player's total points
-
+        // A "class" is a blueprint. This one describes ONE quiz question:
         // the question text, four choices, and which answer is right.
         private class Question
         {
@@ -42,7 +28,61 @@ namespace EduQuest
                 D = d;
                 Answer = answer;
             }
+        }
 
+        // A List holds many items. This one holds all the questions of the quiz.
+        private List<Question> questions = new List<Question>();
+
+        // Puts all the questions into the list.
+        private void LoadQuestions()
+        {
+            // Empty the list first, so questions don't pile up when the quiz is played again.
+            questions.Clear();
+
+            // Each line adds ONE question, in this order:
+            // question text, choice A, choice B, choice C, choice D, correct answer.
+            // The \" inside a text lets us put quote marks inside the text.
+            questions.Add(new Question("She ___ to school every day.", "go", "goes", "going", "gone", "goes"));
+            questions.Add(new Question("Which sentence is correct?", "He don't like apples.", "He doesn't like apples.", "He not like apples.", "He didn't likes apples.", "He doesn't like apples."));
+            questions.Add(new Question("They ___ playing outside right now.", "is", "am", "are", "be", "are"));
+            questions.Add(new Question("Which is the correct spelling?", "Recieve", "Receive", "Receeve", "Receve", "Receive"));
+            questions.Add(new Question("What is the past tense of \"run\"?", "runned", "ran", "running", "runs", "ran"));
+        }
+
+        #endregion
+
+        // =====================================================================
+        #region Game state
+        // These are "fields": variables that belong to the whole form,
+        // so every method below can read and change them.
+        // =====================================================================
+
+        private int secondsPerQuestion;     // how many seconds each question gets
+        private int timeLeft;               // how many seconds are left right now
+        private string correctAnswer = "";  // the right answer for the question on screen
+        private int score = 0;              // the player's total points
+        private int correctCount = 0;       // how many questions the player got right
+
+        // Which question we're on right now. Counting starts at 0, so 0 is the first.
+        private int currentQuestion = 0;
+
+        #endregion
+
+        // =====================================================================
+        #region Startup and window
+        // What happens when the program opens and when the window changes size.
+        // =====================================================================
+
+        public EduQuest()
+        {
+            InitializeComponent();
+
+            // Naka-default yung choices para hindi empty (index 0)
+            cboCategory.SelectedIndex = 0;
+            cboDifficulty.SelectedIndex = 0;
+
+            // Center the game as soon as the window opens
+            CenterMainPanel();
         }
 
         // Keeps the whole game (pnlMain) in the middle of the window,
@@ -59,33 +99,18 @@ namespace EduQuest
             pnlMain.Location = new Point(x, y);
         }
 
-        // A List holds many items. This one holds all the questions of the quiz.
-        private List<Question> questions = new List<Question>();
-
-        // Which question we're on right now. Counting starts at 0, so 0 is the first.
-        private int currentQuestion = 0;
-
-
-
-        // Puts all the questions into the list.
-        private void LoadQuestions()
+        private void EduQuest_Resize(object sender, EventArgs e)
         {
-            // Empty the list first, so questions don't pile up when the quiz is played again.
-            questions.Clear();
-
-            // Each line adds ONE question, in this order:
-            // question text, choice A, choice B, choice C, choice D, correct answer.
-            // The \" inside the last one lets us put quote marks inside the text.
-            questions.Add(new Question("She ___ to school every day.", "go", "goes", "going", "gone", "goes"));
-            questions.Add(new Question("Which sentence is correct?", "He don't like apples.", "He doesn't like apples.", "He not like apples.", "He didn't likes apples.", "He doesn't like apples."));
-            questions.Add(new Question("They ___ playing outside right now.", "is", "am", "are", "be", "are"));
-            questions.Add(new Question("Which is the correct spelling?", "Recieve", "Receive", "Receeve", "Receve", "Receive"));
-            questions.Add(new Question("What is the past tense of \"run\"?", "runned", "ran", "running", "runs", "ran"));
-
+            // The window just changed size, so re-center the game
+            CenterMainPanel();
         }
 
+        #endregion
 
-
+        // =====================================================================
+        #region Home screen and menu
+        // PLAY button, then the menu (Start Quiz / Make Quiz / Exit).
+        // =====================================================================
 
         private void btnPlay_Click(object sender, EventArgs e)
         {
@@ -95,27 +120,40 @@ namespace EduQuest
             // Lilipat yung panel sa middle
             pnlMenu.Location = new Point(100, 150);
 
-            // Show the setup panel (it was hidden at the start)
+            // Show the menu panel (it was hidden at the start)
             pnlMenu.Visible = true;
         }
+
+        private void btnMenuStartQuiz_Click(object sender, EventArgs e)
+        {
+            // The player chose "Start Quiz", so hide the menu
+            pnlMenu.Visible = false;
+
+            // Show the category and difficulty choices in the middle
+            pnlSetup.Location = new Point(100, 200);
+            pnlSetup.Visible = true;
+        }
+
+        private void btnMenuExit_Click(object sender, EventArgs e)
+        {
+            // Close the whole program
+            Application.Exit();
+        }
+
+        #endregion
+
+        // =====================================================================
+        #region Quiz setup
+        // The START button on the category and difficulty screen.
+        // =====================================================================
 
         private void btnStart_Click(object sender, EventArgs e)
         {
             /* Read what the player picked in each dropdown.
                SelectedItem is the choice that is currently selected,
                and ToString() turns it into plain text we can use. */
-            string category = cboCategory.SelectedItem.ToString();
+            string category = cboCategory.SelectedItem.ToString();   // not used yet: later it will choose which questions to load
             string difficulty = cboDifficulty.SelectedItem.ToString();
-
-            // The player made their choices, so hide the setup panel
-            pnlSetup.Visible = false;
-
-            // Move the quiz panel to its spot (50 from the left, 140 from the top)
-            pnlQuiz.Location = new Point(50, 140);
-
-            // Show the quiz panel
-            pnlQuiz.Visible = true;
-
 
             // Pick the time limit based on the difficulty the player chose.
             if (difficulty == "Easy")
@@ -131,6 +169,21 @@ namespace EduQuest
                 secondsPerQuestion = 30;   // anything else is Hard
             }
 
+            // A new quiz starts: reset the score, fill the question list,
+            // and begin at the first question (counting starts at 0).
+            score = 0;
+            correctCount = 0;
+            LoadQuestions();
+            currentQuestion = 0;
+
+            // The player made their choices, so hide the setup panel
+            pnlSetup.Visible = false;
+
+            // Move the quiz panel to its spot (50 from the left, 140 from the top)
+            pnlQuiz.Location = new Point(50, 140);
+
+            // Show the quiz panel
+            pnlQuiz.Visible = true;
 
             // Start the countdown from the full time and show it on screen.
             // The + joins the text "Time: " with the number.
@@ -140,22 +193,16 @@ namespace EduQuest
             // Turn the clock on. It will now tick once every second.
             quizTimer.Start();
 
-            // A new quiz starts: reset the score, fill the question list,
-            // and begin at the first question (counting starts at 0).
-            score = 0;
-            correctCount = 0;
-            LoadQuestions();
-            currentQuestion = 0;
-
             // Show the first question on the screen
             ShowQuestion();
         }
-        private int correctCount = 0;  // how many questions the player got right
 
+        #endregion
 
-        // Works out the results and shows the results screen.
-        
-
+        // =====================================================================
+        #region Quiz play
+        // Showing a question, checking the answer, the timers, and moving on.
+        // =====================================================================
 
         // This one puts a question and its four answers on the screen.
         private void ShowQuestion()
@@ -181,47 +228,7 @@ namespace EduQuest
             btnD.Enabled = true;
         }
 
-        private void quizTimer_Tick(object sender, EventArgs e)
-        {
-            // This runs automatically every 1 second while the timer is on.
-
-            // Count down by 1 second and update the label.
-            timeLeft = timeLeft - 1;
-            lblTimer.Text = "Time: " + timeLeft;
-
-            // If time runs out, stop the clock and say so.
-            if (timeLeft <= 0)
-            {
-                quizTimer.Stop();
-                // Time ran out, so lock all four buttons
-                btnA.Enabled = false;
-                btnB.Enabled = false;
-                btnC.Enabled = false;
-                btnD.Enabled = false;
-
-                // Show the right answer so the player can learn from it
-                lblTimer.Text = "Time's up! The answer was " + correctAnswer;
-
-                nextTimer.Start();
-            }
-        }
-
-        private void btnMenuStartQuiz_Click(object sender, EventArgs e)
-        {
-            // The player chose "Start Quiz", so hide the menu
-            pnlMenu.Visible = false;
-
-            // Show the category and difficulty choices in the middle
-            pnlSetup.Location = new Point(100, 200);
-            pnlSetup.Visible = true;
-        }
-
-        private void btnMenuExit_Click(object sender, EventArgs e)
-        {
-            // Close the whole program
-            Application.Exit();
-        }
-
+        // All four answer buttons (A, B, C, D) run this same method.
         private void AnswerButton_Click(object sender, EventArgs e)
         {
             // "sender" is the button that was just clicked.
@@ -249,13 +256,41 @@ namespace EduQuest
             else
             {
                 lblTimer.Text = "Wrong! The answer was " + correctAnswer;
-
             }
-            // Wait 2 seconds so the player can read the result, then move on
-            nextTimer.Start();
 
+            // This line is OUTSIDE the if/else on purpose, so it runs for
+            // both right and wrong answers.
+            // Wait 2 seconds so the player can read the result, then move on.
+            nextTimer.Start();
         }
 
+        // The question countdown. Runs automatically every 1 second.
+        private void quizTimer_Tick(object sender, EventArgs e)
+        {
+            // Count down by 1 second and update the label.
+            timeLeft = timeLeft - 1;
+            lblTimer.Text = "Time: " + timeLeft;
+
+            // If time runs out, stop the clock and say so.
+            if (timeLeft <= 0)
+            {
+                quizTimer.Stop();
+
+                // Time ran out, so lock all four buttons
+                btnA.Enabled = false;
+                btnB.Enabled = false;
+                btnC.Enabled = false;
+                btnD.Enabled = false;
+
+                // Show the right answer so the player can learn from it
+                lblTimer.Text = "Time's up! The answer was " + correctAnswer;
+
+                // Wait 2 seconds, then move on to the next question
+                nextTimer.Start();
+            }
+        }
+
+        // The 2-second pause between questions.
         private void nextTimer_Tick(object sender, EventArgs e)
         {
             // Stop this timer so it only fires once per question
@@ -278,28 +313,20 @@ namespace EduQuest
             }
             else
             {
-                // No questions left. The real results screen comes in the next step.
+                // No questions left, so the quiz is over: show the results.
                 quizTimer.Stop();
                 ShowResults();
             }
         }
 
-        private void EduQuest_Resize(object sender, EventArgs e)
-        {
-            // The window just changed size, so re-center the game
-            CenterMainPanel();
-        }
+        #endregion
 
-        private void btnPlayAgain_Click(object sender, EventArgs e)
-        {
-            // Hide the results screen
-            pnlResults.Visible = false;
+        // =====================================================================
+        #region Results screen
+        // Working out the score, percentage, fun IQ, and rank.
+        // =====================================================================
 
-            // Go back to the menu, so the player can start a new quiz
-            pnlMenu.Location = new Point(100, 150);
-            pnlMenu.Visible = true;
-        }
-
+        // Works out the results and shows the results screen.
         private void ShowResults()
         {
             // Hide the quiz screen
@@ -342,11 +369,24 @@ namespace EduQuest
             lblFunIQ.Text = "Fun IQ: " + funIQ;
             lblRank.Text = rank;
 
+            // "\n" starts a new line, so the disclaimer fits on two lines
+            lblDisclaimer.Text = "For entertainment and interactive purposes only.\nResults are not an actual measure of intelligence, IQ, or overall knowledge.";
+
             // Show the results panel in its spot
             pnlResults.Location = new Point(50, 140);
             pnlResults.Visible = true;
-            // "\n" starts a new line, so the disclaimer fits on two lines
-            lblDisclaimer.Text = "For entertainment and interactive purposes only.\nResults are not an actual measure of intelligence, IQ, or overall knowledge.";
         }
+
+        private void btnPlayAgain_Click(object sender, EventArgs e)
+        {
+            // Hide the results screen
+            pnlResults.Visible = false;
+
+            // Go back to the menu, so the player can start a new quiz
+            pnlMenu.Location = new Point(100, 150);
+            pnlMenu.Visible = true;
+        }
+
+        #endregion
     }
 }
