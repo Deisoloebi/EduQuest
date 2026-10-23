@@ -50,9 +50,19 @@
             pnlMenu = new Panel();
             btnMenuExit = new Button();
             btnMenuMakeQuiz = new Button();
+            btnMenuLeaderboard = new Button();
             btnMenuStartQuiz = new Button();
             nextTimer = new System.Windows.Forms.Timer(components);
             pnlMain = new Panel();
+            pnlLeaderboard = new Panel();
+            btnDeleteRecord = new Button();
+            btnLeaderboardBack = new Button();
+            lblLeaderboardTitle = new Label();
+            lstLeaderboard = new ListBox();
+            pnlName = new Panel();
+            btnSaveScore = new Button();
+            txtName = new TextBox();
+            lblNamePrompt = new Label();
             pnlResults = new Panel();
             btnPlayAgain = new Button();
             lblDisclaimer = new Label();
@@ -65,6 +75,8 @@
             pnlQuiz.SuspendLayout();
             pnlMenu.SuspendLayout();
             pnlMain.SuspendLayout();
+            pnlLeaderboard.SuspendLayout();
+            pnlName.SuspendLayout();
             pnlResults.SuspendLayout();
             SuspendLayout();
             // 
@@ -290,10 +302,11 @@
             // 
             pnlMenu.Controls.Add(btnMenuExit);
             pnlMenu.Controls.Add(btnMenuMakeQuiz);
+            pnlMenu.Controls.Add(btnMenuLeaderboard);
             pnlMenu.Controls.Add(btnMenuStartQuiz);
             pnlMenu.Location = new Point(100, 150);
             pnlMenu.Name = "pnlMenu";
-            pnlMenu.Size = new Size(500, 250);
+            pnlMenu.Size = new Size(500, 300);
             pnlMenu.TabIndex = 6;
             pnlMenu.Visible = false;
             // 
@@ -304,7 +317,7 @@
             btnMenuExit.FlatStyle = FlatStyle.Flat;
             btnMenuExit.Font = new Font("Georgia", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnMenuExit.ForeColor = Color.FromArgb(25, 20, 45);
-            btnMenuExit.Location = new Point(100, 163);
+            btnMenuExit.Location = new Point(100, 215);
             btnMenuExit.Name = "btnMenuExit";
             btnMenuExit.Size = new Size(300, 55);
             btnMenuExit.TabIndex = 2;
@@ -319,12 +332,27 @@
             btnMenuMakeQuiz.FlatStyle = FlatStyle.Flat;
             btnMenuMakeQuiz.Font = new Font("Georgia", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnMenuMakeQuiz.ForeColor = Color.FromArgb(25, 20, 45);
-            btnMenuMakeQuiz.Location = new Point(100, 98);
+            btnMenuMakeQuiz.Location = new Point(100, 85);
             btnMenuMakeQuiz.Name = "btnMenuMakeQuiz";
             btnMenuMakeQuiz.Size = new Size(300, 55);
             btnMenuMakeQuiz.TabIndex = 1;
             btnMenuMakeQuiz.Text = "MAKE QUIZ";
             btnMenuMakeQuiz.UseVisualStyleBackColor = false;
+            // 
+            // btnMenuLeaderboard
+            // 
+            btnMenuLeaderboard.BackColor = Color.FromArgb(230, 190, 80);
+            btnMenuLeaderboard.Cursor = Cursors.Hand;
+            btnMenuLeaderboard.FlatStyle = FlatStyle.Flat;
+            btnMenuLeaderboard.Font = new Font("Georgia", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnMenuLeaderboard.ForeColor = Color.FromArgb(25, 20, 45);
+            btnMenuLeaderboard.Location = new Point(100, 150);
+            btnMenuLeaderboard.Name = "btnMenuLeaderboard";
+            btnMenuLeaderboard.Size = new Size(300, 55);
+            btnMenuLeaderboard.TabIndex = 3;
+            btnMenuLeaderboard.Text = "LEADERBOARD";
+            btnMenuLeaderboard.UseVisualStyleBackColor = false;
+            btnMenuLeaderboard.Click += btnMenuLeaderboard_Click;
             // 
             // btnMenuStartQuiz
             // 
@@ -333,7 +361,7 @@
             btnMenuStartQuiz.FlatStyle = FlatStyle.Flat;
             btnMenuStartQuiz.Font = new Font("Georgia", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnMenuStartQuiz.ForeColor = Color.FromArgb(25, 20, 45);
-            btnMenuStartQuiz.Location = new Point(100, 30);
+            btnMenuStartQuiz.Location = new Point(100, 20);
             btnMenuStartQuiz.Name = "btnMenuStartQuiz";
             btnMenuStartQuiz.Size = new Size(300, 55);
             btnMenuStartQuiz.TabIndex = 0;
@@ -348,6 +376,8 @@
             // 
             // pnlMain
             // 
+            pnlMain.Controls.Add(pnlLeaderboard);
+            pnlMain.Controls.Add(pnlName);
             pnlMain.Controls.Add(pnlResults);
             pnlMain.Controls.Add(lblTitle);
             pnlMain.Controls.Add(lblSubtitle);
@@ -360,6 +390,120 @@
             pnlMain.Name = "pnlMain";
             pnlMain.Size = new Size(700, 480);
             pnlMain.TabIndex = 7;
+            // 
+            // pnlLeaderboard
+            // 
+            pnlLeaderboard.Controls.Add(btnDeleteRecord);
+            pnlLeaderboard.Controls.Add(btnLeaderboardBack);
+            pnlLeaderboard.Controls.Add(lblLeaderboardTitle);
+            pnlLeaderboard.Controls.Add(lstLeaderboard);
+            pnlLeaderboard.Location = new Point(50, 140);
+            pnlLeaderboard.Name = "pnlLeaderboard";
+            pnlLeaderboard.Size = new Size(600, 330);
+            pnlLeaderboard.TabIndex = 10;
+            pnlLeaderboard.Visible = false;
+            // 
+            // btnDeleteRecord
+            // 
+            btnDeleteRecord.BackColor = Color.FromArgb(178, 58, 58);
+            btnDeleteRecord.Cursor = Cursors.Hand;
+            btnDeleteRecord.FlatStyle = FlatStyle.Flat;
+            btnDeleteRecord.Font = new Font("Georgia", 12.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnDeleteRecord.ForeColor = Color.FromArgb(245, 230, 200);
+            btnDeleteRecord.Location = new Point(110, 265);
+            btnDeleteRecord.Name = "btnDeleteRecord";
+            btnDeleteRecord.Size = new Size(180, 45);
+            btnDeleteRecord.TabIndex = 7;
+            btnDeleteRecord.Text = "DELETE";
+            btnDeleteRecord.UseVisualStyleBackColor = false;
+            btnDeleteRecord.Click += btnDeleteRecord_Click;
+            // 
+            // btnLeaderboardBack
+            // 
+            btnLeaderboardBack.BackColor = Color.FromArgb(230, 190, 80);
+            btnLeaderboardBack.Cursor = Cursors.Hand;
+            btnLeaderboardBack.FlatStyle = FlatStyle.Flat;
+            btnLeaderboardBack.Font = new Font("Georgia", 12.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnLeaderboardBack.ForeColor = Color.FromArgb(25, 20, 45);
+            btnLeaderboardBack.Location = new Point(310, 265);
+            btnLeaderboardBack.Name = "btnLeaderboardBack";
+            btnLeaderboardBack.Size = new Size(180, 45);
+            btnLeaderboardBack.TabIndex = 6;
+            btnLeaderboardBack.Text = "BACK";
+            btnLeaderboardBack.UseVisualStyleBackColor = false;
+            btnLeaderboardBack.Click += btnLeaderboardBack_Click;
+            // 
+            // lblLeaderboardTitle
+            // 
+            lblLeaderboardTitle.Font = new Font("Georgia", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblLeaderboardTitle.ForeColor = Color.FromArgb(230, 190, 80);
+            lblLeaderboardTitle.Location = new Point(20, 5);
+            lblLeaderboardTitle.Name = "lblLeaderboardTitle";
+            lblLeaderboardTitle.Size = new Size(560, 35);
+            lblLeaderboardTitle.TabIndex = 4;
+            lblLeaderboardTitle.Text = "LEADERBOARD";
+            lblLeaderboardTitle.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // lstLeaderboard
+            // 
+            lstLeaderboard.BackColor = Color.FromArgb(45, 38, 80);
+            lstLeaderboard.BorderStyle = BorderStyle.None;
+            lstLeaderboard.Font = new Font("Consolas", 12.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lstLeaderboard.ForeColor = Color.FromArgb(245, 230, 200);
+            lstLeaderboard.FormattingEnabled = true;
+            lstLeaderboard.IntegralHeight = false;
+            lstLeaderboard.Location = new Point(20, 45);
+            lstLeaderboard.Name = "lstLeaderboard";
+            lstLeaderboard.Size = new Size(560, 200);
+            lstLeaderboard.TabIndex = 5;
+            // 
+            // pnlName
+            // 
+            pnlName.BackColor = Color.FromArgb(45, 38, 80);
+            pnlName.BorderStyle = BorderStyle.FixedSingle;
+            pnlName.Controls.Add(btnSaveScore);
+            pnlName.Controls.Add(txtName);
+            pnlName.Controls.Add(lblNamePrompt);
+            pnlName.Location = new Point(150, 140);
+            pnlName.Name = "pnlName";
+            pnlName.Size = new Size(400, 200);
+            pnlName.TabIndex = 8;
+            pnlName.Visible = false;
+            // 
+            // btnSaveScore
+            // 
+            btnSaveScore.BackColor = Color.FromArgb(230, 190, 80);
+            btnSaveScore.Cursor = Cursors.Hand;
+            btnSaveScore.FlatStyle = FlatStyle.Flat;
+            btnSaveScore.Font = new Font("Georgia", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnSaveScore.ForeColor = Color.FromArgb(25, 20, 45);
+            btnSaveScore.Location = new Point(100, 135);
+            btnSaveScore.Name = "btnSaveScore";
+            btnSaveScore.Size = new Size(200, 45);
+            btnSaveScore.TabIndex = 2;
+            btnSaveScore.Text = "SAVE SCORE";
+            btnSaveScore.UseVisualStyleBackColor = false;
+            btnSaveScore.Click += btnSaveScore_Click;
+            // 
+            // txtName
+            // 
+            txtName.Font = new Font("Georgia", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtName.Location = new Point(50, 85);
+            txtName.MaxLength = 15;
+            txtName.Name = "txtName";
+            txtName.Size = new Size(300, 29);
+            txtName.TabIndex = 1;
+            // 
+            // lblNamePrompt
+            // 
+            lblNamePrompt.Font = new Font("Georgia", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblNamePrompt.ForeColor = Color.FromArgb(230, 190, 80);
+            lblNamePrompt.Location = new Point(20, 20);
+            lblNamePrompt.Name = "lblNamePrompt";
+            lblNamePrompt.Size = new Size(360, 50);
+            lblNamePrompt.TabIndex = 0;
+            lblNamePrompt.Text = "Enter your name";
+            lblNamePrompt.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // pnlResults
             // 
@@ -473,6 +617,9 @@
             pnlQuiz.ResumeLayout(false);
             pnlMenu.ResumeLayout(false);
             pnlMain.ResumeLayout(false);
+            pnlLeaderboard.ResumeLayout(false);
+            pnlName.ResumeLayout(false);
+            pnlName.PerformLayout();
             pnlResults.ResumeLayout(false);
             pnlResults.PerformLayout();
             ResumeLayout(false);
@@ -512,5 +659,16 @@
         private Label lblFunIQ;
         private Label lblPercent;
         private Button btnPlayAgain;
+        private Panel pnlName;
+        private TextBox txtName;
+        private Label lblNamePrompt;
+        private Button btnSaveScore;
+        private FlowLayoutPanel pnlOld;
+        private Panel pnlLeaderboard;
+        private Button btnDeleteRecord;
+        private Button btnLeaderboardBack;
+        private Label lblLeaderboardTitle;
+        private ListBox lstLeaderboard;
+        private Button btnMenuLeaderboard;
     }
 }

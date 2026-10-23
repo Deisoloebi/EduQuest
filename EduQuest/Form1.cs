@@ -377,6 +377,14 @@ namespace EduQuest
 
             pnlResults.Location = new Point(50, 140);
             pnlResults.Visible = true;
+
+            // Ask for the player's name so the score can be saved
+            txtName.Text = "";
+            lblNamePrompt.Text = "Quest complete! Score: " + score + "\nEnter your name to save it";
+            pnlName.Location = new Point(150, 140);
+            pnlName.Visible = true;
+            pnlName.BringToFront();
+            txtName.Focus();
         }
 
         // PLAY AGAIN button: goes back to the menu
@@ -388,5 +396,149 @@ namespace EduQuest
         }
 
         #endregion
+
+        private void btnSaveScore_Click(object sender, EventArgs e)
+        {
+            // Remove extra spaces, and the "|" character (it separates name and score in the file)
+            string name = txtName.Text.Trim().Replace("|", "");
+
+            // A name is required
+            if (name == "")
+            {
+                MessageBox.Show("Please type your name.", "Name Needed");
+                return;
+            }
+
+            // Add one line "name|score" to leaderboard.txt (the file is created if it doesn't exist)
+            string path = Path.Combine(Application.StartupPath, "leaderboard.txt");
+            File.AppendAllText(path, name + "|" + score + Environment.NewLine);
+
+            // Close the pop-up and the results screen, then show the leaderboard
+            pnlName.Visible = false;
+            pnlResults.Visible = false;
+
+            LoadScoresFromFile();
+            ShowLeaderboardList();
+            pnlLeaderboard.Location = new Point(50, 140);
+            pnlLeaderboard.Visible = true;
+            pnlLeaderboard.BringToFront();
+        }
+
+        #region Leaderboard
+
+        // One record on the leaderboard
+        private class ScoreEntry
+        {
+            public string Name;
+            public int Score;
+
+            public ScoreEntry(string name, int score)
+            {
+                Name = name;
+                Score = score;
+            }
+        }
+
+        // All saved scores, and the file they are saved in
+        private List<ScoreEntry> scoreEntries = new List<ScoreEntry>();
+        private string leaderboardPath = Path.Combine(Application.StartupPath, "leaderboard.txt");
+
+        // Reads leaderboard.txt into the list (each line looks like: name|score)
+        private void LoadScoresFromFile()
+        {
+            scoreEntries.Clear();
+
+            // Nothing saved yet
+            if (!File.Exists(leaderboardPath))
+            {
+                return;
+            }
+
+            foreach (string line in File.ReadAllLines(leaderboardPath))
+            {
+                string[] parts = line.Split('|');
+                int savedScore;
+
+                // Only keep lines that have a name and a valid number
+                if (parts.Length == 2 && int.TryParse(parts[1], out savedScore))
+                {
+                    scoreEntries.Add(new ScoreEntry(parts[0], savedScore));
+                }
+            }
+        }
+
+        // Writes the whole list back to leaderboard.txt (used after deleting)
+        private void SaveScoresToFile()
+        {
+            List<string> lines = new List<string>();
+
+            foreach (ScoreEntry entry in scoreEntries)
+            {
+                lines.Add(entry.Name + "|" + entry.Score);
+            }
+
+            File.WriteAllLines(leaderboardPath, lines);
+        }
+
+        // Sorts the scores (highest first) and shows them in the list box
+        private void ShowLeaderboardList()
+        {
+            // Compares two entries so the higher score comes first
+            scoreEntries.Sort((a, b) => b.Score.CompareTo(a.Score));
+
+            lstLeaderboard.Items.Clear();
+
+            for (int i = 0; i < scoreEntries.Count; i++)
+            {
+                // PadRight adds spaces so the columns line up
+                string rankText = (i + 1).ToString().PadRight(5);
+                string nameText = scoreEntries[i].Name.PadRight(18);
+                lstLeaderboard.Items.Add(rankText + nameText + scoreEntries[i].Score);
+            }
+        }
+
+        #endregion
+
+
+        private void btnMenuLeaderboard_Click(object sender, EventArgs e)
+        {
+            // LEADERBOARD button: shows the saved scores
+            pnlMenu.Visible = false;
+            LoadScoresFromFile();
+            ShowLeaderboardList();
+            pnlLeaderboard.Location = new Point(50, 140);
+            pnlLeaderboard.Visible = true;
+        }
+
+        private void btnLeaderboardBack_Click(object sender, EventArgs e)
+        {
+            // BACK button: returns to the menu
+            pnlLeaderboard.Visible = false;
+            pnlMenu.Location = new Point(100, 150);
+            pnlMenu.Visible = true;
+        }
+
+        private void btnDeleteRecord_Click(object sender, EventArgs e)
+        {
+            // DELETE button: removes the selected record after asking to confirm
+            int index = lstLeaderboard.SelectedIndex;
+
+            // Nothing selected yet
+            if (index < 0)
+            {
+                MessageBox.Show("Select a record to delete first.", "Delete Record");
+                return;
+            }
+
+            DialogResult answer = MessageBox.Show("Delete " + scoreEntries[index].Name + "'s score?", "Delete Record", MessageBoxButtons.YesNo);
+
+            if (answer == DialogResult.Yes)
+            {
+                scoreEntries.RemoveAt(index);
+                SaveScoresToFile();
+                ShowLeaderboardList();
+            }
+        }
     }
+
 }
