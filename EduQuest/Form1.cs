@@ -121,7 +121,7 @@ namespace EduQuest
         private int score = 0;              // total points
         private int correctCount = 0;       // number of correct answers
         private int currentQuestion = 0;    // position in the list (starts at 0)
-
+        private string playerRank = "";     // rank title earned in the last quiz
         #endregion
 
         #region Startup and window
@@ -371,6 +371,7 @@ namespace EduQuest
             lblPercent.Text = "Percentage: " + percent.ToString("0") + "%";
             lblFunIQ.Text = "Fun IQ: " + funIQ;
             lblRank.Text = rank;
+            playerRank = rank;
 
             // Disclaimer (two lines so it fits)
             lblDisclaimer.Text = "For entertainment and interactive purposes only.\nResults are not an actual measure of intelligence, IQ, or overall knowledge.";
@@ -411,7 +412,7 @@ namespace EduQuest
 
             // Add one line "name|score" to leaderboard.txt (the file is created if it doesn't exist)
             string path = Path.Combine(Application.StartupPath, "leaderboard.txt");
-            File.AppendAllText(path, name + "|" + score + Environment.NewLine);
+            File.AppendAllText(path, name + "|" + score + "|" + playerRank + Environment.NewLine);
 
             // Close the pop-up and the results screen, then show the leaderboard
             pnlName.Visible = false;
@@ -425,17 +426,18 @@ namespace EduQuest
         }
 
         #region Leaderboard
-
         // One record on the leaderboard
         private class ScoreEntry
         {
             public string Name;
             public int Score;
+            public string Rank;
 
-            public ScoreEntry(string name, int score)
+            public ScoreEntry(string name, int score, string rank)
             {
                 Name = name;
                 Score = score;
+                Rank = rank;
             }
         }
 
@@ -443,7 +445,7 @@ namespace EduQuest
         private List<ScoreEntry> scoreEntries = new List<ScoreEntry>();
         private string leaderboardPath = Path.Combine(Application.StartupPath, "leaderboard.txt");
 
-        // Reads leaderboard.txt into the list (each line looks like: name|score)
+        // Reads leaderboard.txt into the list (each line looks like: name|score|rank)
         private void LoadScoresFromFile()
         {
             scoreEntries.Clear();
@@ -459,10 +461,17 @@ namespace EduQuest
                 string[] parts = line.Split('|');
                 int savedScore;
 
-                // Only keep lines that have a name and a valid number
-                if (parts.Length == 2 && int.TryParse(parts[1], out savedScore))
+                // Keep lines that have at least a name and a valid score
+                if (parts.Length >= 2 && int.TryParse(parts[1], out savedScore))
                 {
-                    scoreEntries.Add(new ScoreEntry(parts[0], savedScore));
+                    // Older lines have no rank, so show "-" for them
+                    string savedRank = "-";
+                    if (parts.Length >= 3)
+                    {
+                        savedRank = parts[2];
+                    }
+
+                    scoreEntries.Add(new ScoreEntry(parts[0], savedScore, savedRank));
                 }
             }
         }
@@ -474,7 +483,7 @@ namespace EduQuest
 
             foreach (ScoreEntry entry in scoreEntries)
             {
-                lines.Add(entry.Name + "|" + entry.Score);
+                lines.Add(entry.Name + "|" + entry.Score + "|" + entry.Rank);
             }
 
             File.WriteAllLines(leaderboardPath, lines);
@@ -483,7 +492,6 @@ namespace EduQuest
         // Sorts the scores (highest first) and shows them in the list box
         private void ShowLeaderboardList()
         {
-            // Compares two entries so the higher score comes first
             scoreEntries.Sort((a, b) => b.Score.CompareTo(a.Score));
 
             lstLeaderboard.Items.Clear();
@@ -491,12 +499,12 @@ namespace EduQuest
             for (int i = 0; i < scoreEntries.Count; i++)
             {
                 // PadRight adds spaces so the columns line up
-                string rankText = (i + 1).ToString().PadRight(5);
-                string nameText = scoreEntries[i].Name.PadRight(18);
-                lstLeaderboard.Items.Add(rankText + nameText + scoreEntries[i].Score);
+                string posText = (i + 1).ToString().PadRight(4);
+                string nameText = scoreEntries[i].Name.PadRight(17);
+                string scoreText = scoreEntries[i].Score.ToString().PadRight(7);
+                lstLeaderboard.Items.Add(posText + nameText + scoreText + scoreEntries[i].Rank);
             }
         }
-
         #endregion
 
 
