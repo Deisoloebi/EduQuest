@@ -148,6 +148,7 @@ namespace EduQuest
         private int correctCount = 0;       // number of correct answers
         private int currentQuestion = 0;    // position in the list (starts at 0)
         private string playerRank = "";     // rank title earned in the last quiz
+        private System.Media.SoundPlayer music;   // plays the background music
         #endregion
 
         #region Startup and window
@@ -164,6 +165,14 @@ namespace EduQuest
 
             // Center the game when the program opens
             CenterMainPanel();
+
+            // Background music: loops until the program closes
+            string musicPath = Path.Combine(Application.StartupPath, "bgmusic.wav");
+            if (File.Exists(musicPath))
+            {
+                music = new System.Media.SoundPlayer(musicPath);
+                music.PlayLooping();
+            }
 
         }
 
