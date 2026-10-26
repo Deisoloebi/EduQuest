@@ -54,6 +54,27 @@
             btnMenuStartQuiz = new Button();
             nextTimer = new System.Windows.Forms.Timer(components);
             pnlMain = new Panel();
+            pnlMakeQuestion = new Panel();
+            btnQuestionSave = new Button();
+            btnQuestionBack = new Button();
+            lblMakeHint = new Label();
+            txtChoiceD = new TextBox();
+            rbD = new RadioButton();
+            txtChoiceC = new TextBox();
+            rbC = new RadioButton();
+            txtChoiceB = new TextBox();
+            rbB = new RadioButton();
+            txtChoiceA = new TextBox();
+            rbA = new RadioButton();
+            txtMakeQuestion = new TextBox();
+            lblMakeInfo = new Label();
+            pnlMakeSetup = new Panel();
+            btnMakeBack = new Button();
+            btnMakeNext = new Button();
+            cboMakeDifficulty = new ComboBox();
+            lblMakeDifficulty = new Label();
+            cboMakeCategory = new ComboBox();
+            lblMakeCategory = new Label();
             pnlLeaderboard = new Panel();
             btnDeleteRecord = new Button();
             btnLeaderboardBack = new Button();
@@ -75,6 +96,8 @@
             pnlQuiz.SuspendLayout();
             pnlMenu.SuspendLayout();
             pnlMain.SuspendLayout();
+            pnlMakeQuestion.SuspendLayout();
+            pnlMakeSetup.SuspendLayout();
             pnlLeaderboard.SuspendLayout();
             pnlName.SuspendLayout();
             pnlResults.SuspendLayout();
@@ -338,6 +361,7 @@
             btnMenuMakeQuiz.TabIndex = 1;
             btnMenuMakeQuiz.Text = "MAKE QUIZ";
             btnMenuMakeQuiz.UseVisualStyleBackColor = false;
+            btnMenuMakeQuiz.Click += btnMenuMakeQuiz_Click;
             // 
             // btnMenuLeaderboard
             // 
@@ -376,6 +400,8 @@
             // 
             // pnlMain
             // 
+            pnlMain.Controls.Add(pnlMakeQuestion);
+            pnlMain.Controls.Add(pnlMakeSetup);
             pnlMain.Controls.Add(pnlLeaderboard);
             pnlMain.Controls.Add(pnlName);
             pnlMain.Controls.Add(pnlResults);
@@ -390,6 +416,270 @@
             pnlMain.Name = "pnlMain";
             pnlMain.Size = new Size(700, 480);
             pnlMain.TabIndex = 7;
+            // 
+            // pnlMakeQuestion
+            // 
+            pnlMakeQuestion.Controls.Add(btnQuestionSave);
+            pnlMakeQuestion.Controls.Add(btnQuestionBack);
+            pnlMakeQuestion.Controls.Add(lblMakeHint);
+            pnlMakeQuestion.Controls.Add(txtChoiceD);
+            pnlMakeQuestion.Controls.Add(rbD);
+            pnlMakeQuestion.Controls.Add(txtChoiceC);
+            pnlMakeQuestion.Controls.Add(rbC);
+            pnlMakeQuestion.Controls.Add(txtChoiceB);
+            pnlMakeQuestion.Controls.Add(rbB);
+            pnlMakeQuestion.Controls.Add(txtChoiceA);
+            pnlMakeQuestion.Controls.Add(rbA);
+            pnlMakeQuestion.Controls.Add(txtMakeQuestion);
+            pnlMakeQuestion.Controls.Add(lblMakeInfo);
+            pnlMakeQuestion.Location = new Point(50, 140);
+            pnlMakeQuestion.Name = "pnlMakeQuestion";
+            pnlMakeQuestion.Size = new Size(600, 330);
+            pnlMakeQuestion.TabIndex = 12;
+            pnlMakeQuestion.Visible = false;
+            // 
+            // btnQuestionSave
+            // 
+            btnQuestionSave.BackColor = Color.FromArgb(230, 190, 80);
+            btnQuestionSave.Cursor = Cursors.Hand;
+            btnQuestionSave.FlatStyle = FlatStyle.Flat;
+            btnQuestionSave.Font = new Font("Georgia", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnQuestionSave.ForeColor = Color.FromArgb(25, 20, 45);
+            btnQuestionSave.Location = new Point(360, 284);
+            btnQuestionSave.Name = "btnQuestionSave";
+            btnQuestionSave.Size = new Size(200, 40);
+            btnQuestionSave.TabIndex = 11;
+            btnQuestionSave.Text = "SAVE QUESTION";
+            btnQuestionSave.UseVisualStyleBackColor = false;
+            btnQuestionSave.Click += btnQuestionSave_Click;
+            // 
+            // btnQuestionBack
+            // 
+            btnQuestionBack.BackColor = Color.FromArgb(245, 230, 200);
+            btnQuestionBack.Cursor = Cursors.Hand;
+            btnQuestionBack.FlatStyle = FlatStyle.Flat;
+            btnQuestionBack.Font = new Font("Georgia", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnQuestionBack.ForeColor = Color.FromArgb(25, 20, 45);
+            btnQuestionBack.Location = new Point(40, 284);
+            btnQuestionBack.Name = "btnQuestionBack";
+            btnQuestionBack.Size = new Size(200, 40);
+            btnQuestionBack.TabIndex = 12;
+            btnQuestionBack.Text = "BACK";
+            btnQuestionBack.UseVisualStyleBackColor = false;
+            btnQuestionBack.Click += btnQuestionBack_Click;
+            // 
+            // lblMakeHint
+            // 
+            lblMakeHint.Font = new Font("Georgia", 9F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            lblMakeHint.ForeColor = Color.FromArgb(245, 230, 200);
+            lblMakeHint.Location = new Point(20, 262);
+            lblMakeHint.Name = "lblMakeHint";
+            lblMakeHint.Size = new Size(560, 18);
+            lblMakeHint.TabIndex = 10;
+            lblMakeHint.Text = "Select the circle next to the correct answer";
+            lblMakeHint.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // txtChoiceD
+            // 
+            txtChoiceD.BackColor = Color.FromArgb(245, 230, 200);
+            txtChoiceD.Font = new Font("Georgia", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtChoiceD.ForeColor = Color.FromArgb(25, 20, 45);
+            txtChoiceD.Location = new Point(80, 235);
+            txtChoiceD.Name = "txtChoiceD";
+            txtChoiceD.Size = new Size(500, 26);
+            txtChoiceD.TabIndex = 9;
+            // 
+            // rbD
+            // 
+            rbD.AutoSize = true;
+            rbD.Font = new Font("Georgia", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            rbD.ForeColor = Color.FromArgb(245, 230, 200);
+            rbD.Location = new Point(20, 235);
+            rbD.Name = "rbD";
+            rbD.Size = new Size(38, 22);
+            rbD.TabIndex = 8;
+            rbD.TabStop = true;
+            rbD.Text = "D";
+            rbD.UseVisualStyleBackColor = true;
+            // 
+            // txtChoiceC
+            // 
+            txtChoiceC.BackColor = Color.FromArgb(245, 230, 200);
+            txtChoiceC.Font = new Font("Georgia", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtChoiceC.ForeColor = Color.FromArgb(25, 20, 45);
+            txtChoiceC.Location = new Point(80, 190);
+            txtChoiceC.Name = "txtChoiceC";
+            txtChoiceC.Size = new Size(500, 26);
+            txtChoiceC.TabIndex = 7;
+            // 
+            // rbC
+            // 
+            rbC.AutoSize = true;
+            rbC.Font = new Font("Georgia", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            rbC.ForeColor = Color.FromArgb(245, 230, 200);
+            rbC.Location = new Point(20, 190);
+            rbC.Name = "rbC";
+            rbC.Size = new Size(37, 22);
+            rbC.TabIndex = 6;
+            rbC.TabStop = true;
+            rbC.Text = "C";
+            rbC.UseVisualStyleBackColor = true;
+            // 
+            // txtChoiceB
+            // 
+            txtChoiceB.BackColor = Color.FromArgb(245, 230, 200);
+            txtChoiceB.Font = new Font("Georgia", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtChoiceB.ForeColor = Color.FromArgb(25, 20, 45);
+            txtChoiceB.Location = new Point(80, 145);
+            txtChoiceB.Name = "txtChoiceB";
+            txtChoiceB.Size = new Size(500, 26);
+            txtChoiceB.TabIndex = 5;
+            // 
+            // rbB
+            // 
+            rbB.AutoSize = true;
+            rbB.Font = new Font("Georgia", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            rbB.ForeColor = Color.FromArgb(245, 230, 200);
+            rbB.Location = new Point(20, 145);
+            rbB.Name = "rbB";
+            rbB.Size = new Size(37, 22);
+            rbB.TabIndex = 4;
+            rbB.TabStop = true;
+            rbB.Text = "B";
+            rbB.UseVisualStyleBackColor = true;
+            // 
+            // txtChoiceA
+            // 
+            txtChoiceA.BackColor = Color.FromArgb(245, 230, 200);
+            txtChoiceA.Font = new Font("Georgia", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtChoiceA.ForeColor = Color.FromArgb(25, 20, 45);
+            txtChoiceA.Location = new Point(80, 100);
+            txtChoiceA.Name = "txtChoiceA";
+            txtChoiceA.Size = new Size(500, 26);
+            txtChoiceA.TabIndex = 3;
+            // 
+            // rbA
+            // 
+            rbA.AutoSize = true;
+            rbA.Font = new Font("Georgia", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            rbA.ForeColor = Color.FromArgb(245, 230, 200);
+            rbA.Location = new Point(20, 100);
+            rbA.Name = "rbA";
+            rbA.Size = new Size(38, 22);
+            rbA.TabIndex = 2;
+            rbA.TabStop = true;
+            rbA.Text = "A";
+            rbA.UseVisualStyleBackColor = true;
+            // 
+            // txtMakeQuestion
+            // 
+            txtMakeQuestion.BackColor = Color.FromArgb(245, 230, 200);
+            txtMakeQuestion.Font = new Font("Georgia", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtMakeQuestion.ForeColor = Color.FromArgb(25, 20, 45);
+            txtMakeQuestion.Location = new Point(20, 45);
+            txtMakeQuestion.Name = "txtMakeQuestion";
+            txtMakeQuestion.PlaceholderText = "Type the question here";
+            txtMakeQuestion.Size = new Size(560, 26);
+            txtMakeQuestion.TabIndex = 1;
+            // 
+            // lblMakeInfo
+            // 
+            lblMakeInfo.Font = new Font("Georgia", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblMakeInfo.ForeColor = Color.FromArgb(230, 190, 80);
+            lblMakeInfo.Location = new Point(20, 5);
+            lblMakeInfo.Name = "lblMakeInfo";
+            lblMakeInfo.Size = new Size(560, 30);
+            lblMakeInfo.TabIndex = 0;
+            lblMakeInfo.Text = "Category - Difficulty";
+            lblMakeInfo.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // pnlMakeSetup
+            // 
+            pnlMakeSetup.Controls.Add(btnMakeBack);
+            pnlMakeSetup.Controls.Add(btnMakeNext);
+            pnlMakeSetup.Controls.Add(cboMakeDifficulty);
+            pnlMakeSetup.Controls.Add(lblMakeDifficulty);
+            pnlMakeSetup.Controls.Add(cboMakeCategory);
+            pnlMakeSetup.Controls.Add(lblMakeCategory);
+            pnlMakeSetup.Location = new Point(100, 200);
+            pnlMakeSetup.Name = "pnlMakeSetup";
+            pnlMakeSetup.Size = new Size(500, 210);
+            pnlMakeSetup.TabIndex = 11;
+            pnlMakeSetup.Visible = false;
+            // 
+            // btnMakeBack
+            // 
+            btnMakeBack.BackColor = Color.FromArgb(245, 230, 200);
+            btnMakeBack.Cursor = Cursors.Hand;
+            btnMakeBack.FlatStyle = FlatStyle.Flat;
+            btnMakeBack.Font = new Font("Georgia", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnMakeBack.ForeColor = Color.FromArgb(25, 20, 45);
+            btnMakeBack.Location = new Point(260, 150);
+            btnMakeBack.Name = "btnMakeBack";
+            btnMakeBack.Size = new Size(200, 45);
+            btnMakeBack.TabIndex = 8;
+            btnMakeBack.Text = "BACK";
+            btnMakeBack.UseVisualStyleBackColor = false;
+            btnMakeBack.Click += btnMakeBack_Click;
+            // 
+            // btnMakeNext
+            // 
+            btnMakeNext.BackColor = Color.FromArgb(230, 190, 80);
+            btnMakeNext.Cursor = Cursors.Hand;
+            btnMakeNext.FlatStyle = FlatStyle.Flat;
+            btnMakeNext.Font = new Font("Georgia", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnMakeNext.ForeColor = Color.FromArgb(25, 20, 45);
+            btnMakeNext.Location = new Point(40, 150);
+            btnMakeNext.Name = "btnMakeNext";
+            btnMakeNext.Size = new Size(200, 45);
+            btnMakeNext.TabIndex = 9;
+            btnMakeNext.Text = "NEXT";
+            btnMakeNext.UseVisualStyleBackColor = false;
+            btnMakeNext.Click += btnMakeNext_Click;
+            // 
+            // cboMakeDifficulty
+            // 
+            cboMakeDifficulty.DropDownStyle = ComboBoxStyle.DropDownList;
+            cboMakeDifficulty.Font = new Font("Georgia", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            cboMakeDifficulty.FormattingEnabled = true;
+            cboMakeDifficulty.Items.AddRange(new object[] { "Easy", "Medium", "Hard" });
+            cboMakeDifficulty.Location = new Point(20, 105);
+            cboMakeDifficulty.Name = "cboMakeDifficulty";
+            cboMakeDifficulty.Size = new Size(460, 26);
+            cboMakeDifficulty.TabIndex = 7;
+            // 
+            // lblMakeDifficulty
+            // 
+            lblMakeDifficulty.AutoSize = true;
+            lblMakeDifficulty.Font = new Font("Georgia", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblMakeDifficulty.ForeColor = Color.FromArgb(245, 230, 200);
+            lblMakeDifficulty.Location = new Point(20, 75);
+            lblMakeDifficulty.Name = "lblMakeDifficulty";
+            lblMakeDifficulty.Size = new Size(228, 23);
+            lblMakeDifficulty.TabIndex = 6;
+            lblMakeDifficulty.Text = "Choose your difficulty";
+            // 
+            // cboMakeCategory
+            // 
+            cboMakeCategory.DropDownStyle = ComboBoxStyle.DropDownList;
+            cboMakeCategory.Font = new Font("Georgia", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            cboMakeCategory.FormattingEnabled = true;
+            cboMakeCategory.Items.AddRange(new object[] { "Mathematics", "English Grammar", "General Knowledge" });
+            cboMakeCategory.Location = new Point(20, 32);
+            cboMakeCategory.Name = "cboMakeCategory";
+            cboMakeCategory.Size = new Size(460, 26);
+            cboMakeCategory.TabIndex = 5;
+            // 
+            // lblMakeCategory
+            // 
+            lblMakeCategory.AutoSize = true;
+            lblMakeCategory.Font = new Font("Georgia", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblMakeCategory.ForeColor = Color.FromArgb(245, 230, 200);
+            lblMakeCategory.Location = new Point(20, 5);
+            lblMakeCategory.Name = "lblMakeCategory";
+            lblMakeCategory.Size = new Size(222, 23);
+            lblMakeCategory.TabIndex = 4;
+            lblMakeCategory.Text = "Choose your category";
             // 
             // pnlLeaderboard
             // 
@@ -617,6 +907,10 @@
             pnlQuiz.ResumeLayout(false);
             pnlMenu.ResumeLayout(false);
             pnlMain.ResumeLayout(false);
+            pnlMakeQuestion.ResumeLayout(false);
+            pnlMakeQuestion.PerformLayout();
+            pnlMakeSetup.ResumeLayout(false);
+            pnlMakeSetup.PerformLayout();
             pnlLeaderboard.ResumeLayout(false);
             pnlName.ResumeLayout(false);
             pnlName.PerformLayout();
@@ -670,5 +964,26 @@
         private Label lblLeaderboardTitle;
         private ListBox lstLeaderboard;
         private Button btnMenuLeaderboard;
+        private Panel pnlMakeSetup;
+        private ComboBox cboMakeDifficulty;
+        private Label lblMakeDifficulty;
+        private ComboBox cboMakeCategory;
+        private Label lblMakeCategory;
+        private Button btnMakeBack;
+        private Button btnMakeNext;
+        private Panel pnlMakeQuestion;
+        private TextBox txtMakeQuestion;
+        private Label lblMakeInfo;
+        private RadioButton rbA;
+        private TextBox txtChoiceD;
+        private RadioButton rbD;
+        private TextBox txtChoiceC;
+        private RadioButton rbC;
+        private TextBox txtChoiceB;
+        private RadioButton rbB;
+        private TextBox txtChoiceA;
+        private Label lblMakeHint;
+        private Button btnQuestionSave;
+        private Button btnQuestionBack;
     }
 }

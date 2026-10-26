@@ -29,6 +29,29 @@ namespace EduQuest
         // All the questions for the current quiz
         private List<Question> questions = new List<Question>();
 
+        // File where questions made with MAKE QUIZ are saved
+        private string questionsPath = Path.Combine(Application.StartupPath, "questions.txt");
+
+        // Adds the saved questions that match the category and difficulty
+        private void LoadSavedQuestions(string category, string difficulty)
+        {
+            if (!File.Exists(questionsPath))
+            {
+                return;
+            }
+
+            foreach (string line in File.ReadAllLines(questionsPath))
+            {
+                // Each line: category|difficulty|question|A|B|C|D|answer
+                string[] parts = line.Split('|');
+
+                if (parts.Length == 8 && parts[0] == category && parts[1] == difficulty)
+                {
+                    questions.Add(new Question(parts[2], parts[3], parts[4], parts[5], parts[6], parts[7]));
+                }
+            }
+        }
+
         // Loads the questions that match the chosen category and difficulty
         private void LoadQuestions(string category, string difficulty)
         {
@@ -104,6 +127,9 @@ namespace EduQuest
                 }
             }
 
+            // Add the questions made with MAKE QUIZ
+            LoadSavedQuestions(category, difficulty);
+
             // Warn if nothing matched (usually a category name that doesn't match the dropdown)
             if (questions.Count == 0)
             {
@@ -133,9 +159,12 @@ namespace EduQuest
             // Naka-default yung choices para hindi empty (index 0)
             cboCategory.SelectedIndex = 0;
             cboDifficulty.SelectedIndex = 0;
+            cboMakeCategory.SelectedIndex = 0;
+            cboMakeDifficulty.SelectedIndex = 0;
 
             // Center the game when the program opens
             CenterMainPanel();
+
         }
 
         // Keeps the game panel in the middle of the window
@@ -546,6 +575,116 @@ namespace EduQuest
                 SaveScoresToFile();
                 ShowLeaderboardList();
             }
+        }
+
+        private void rbB_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnMenuMakeQuiz_Click(object sender, EventArgs e)
+        {
+            // MAKE QUIZ button: opens the category and difficulty choice
+            pnlMenu.Visible = false;
+            pnlMakeSetup.Location = new Point(100, 200);
+            pnlMakeSetup.Visible = true;
+        }
+
+        private void btnMakeBack_Click(object sender, EventArgs e)
+        {
+            // BACK button: returns to the menu
+            pnlMakeSetup.Visible = false;
+            pnlMenu.Location = new Point(100, 150);
+            pnlMenu.Visible = true;
+        }
+
+        private void btnMakeNext_Click(object sender, EventArgs e)
+        {
+            // NEXT button: opens the question form for the chosen category and difficulty
+            lblMakeInfo.Text = cboMakeCategory.SelectedItem.ToString() + " - " + cboMakeDifficulty.SelectedItem.ToString();
+
+            // Start with empty boxes and no answer selected
+            txtMakeQuestion.Text = "";
+            txtChoiceA.Text = "";
+            txtChoiceB.Text = "";
+            txtChoiceC.Text = "";
+            txtChoiceD.Text = "";
+            rbA.Checked = false;
+            rbB.Checked = false;
+            rbC.Checked = false;
+            rbD.Checked = false;
+
+            // Switch to the question screen
+            pnlMakeSetup.Visible = false;
+            pnlMakeQuestion.Location = new Point(50, 140);
+            pnlMakeQuestion.Visible = true;
+        }
+
+        private void btnQuestionBack_Click(object sender, EventArgs e)
+        {
+            // BACK button: returns to the category and difficulty choice
+            pnlMakeQuestion.Visible = false;
+            pnlMakeSetup.Location = new Point(100, 200);
+            pnlMakeSetup.Visible = true;
+        }
+
+        private void btnQuestionSave_Click(object sender, EventArgs e)
+        {
+            // SAVE QUESTION button: saves the new question to questions.txt and returns to the menu
+
+            // Read the boxes ("|" separates the parts in the file, so it is replaced)
+            string question = txtMakeQuestion.Text.Trim().Replace("|", "/");
+            string a = txtChoiceA.Text.Trim().Replace("|", "/");
+            string b = txtChoiceB.Text.Trim().Replace("|", "/");
+            string c = txtChoiceC.Text.Trim().Replace("|", "/");
+            string d = txtChoiceD.Text.Trim().Replace("|", "/");
+
+            // Everything must be filled in
+            if (question == "" || a == "" || b == "" || c == "" || d == "")
+            {
+                MessageBox.Show("Please fill in the question and all four choices.", "Missing Information");
+                return;
+            }
+
+            // Find which choice was marked as correct
+            string answer = "";
+            if (rbA.Checked)
+            {
+                answer = a;
+            }
+            else if (rbB.Checked)
+            {
+                answer = b;
+            }
+            else if (rbC.Checked)
+            {
+                answer = c;
+            }
+            else if (rbD.Checked)
+            {
+                answer = d;
+            }
+
+            if (answer == "")
+            {
+                MessageBox.Show("Please select the circle next to the correct answer.", "Missing Answer");
+                return;
+            }
+
+            // Category and difficulty chosen earlier (lowercase so they match when loading)
+            string category = cboMakeCategory.SelectedItem.ToString().ToLower();
+            string difficulty = cboMakeDifficulty.SelectedItem.ToString().ToLower();
+
+            // Add one line: category|difficulty|question|A|B|C|D|answer
+            string line = category + "|" + difficulty + "|" + question + "|" + a + "|" + b + "|" + c + "|" + d + "|" + answer;
+            File.AppendAllText(questionsPath, line + Environment.NewLine);
+
+            // Back to the menu
+            pnlMakeQuestion.Visible = false;
+            pnlMenu.Location = new Point(100, 150);
+            pnlMenu.Visible = true;
+
+            MessageBox.Show("Question saved!", "Make Quiz");
         }
     }
 
