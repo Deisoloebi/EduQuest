@@ -232,15 +232,15 @@ namespace EduQuest
             // Time per question depends on the difficulty
             if (difficulty == "Easy")
             {
-                secondsPerQuestion = 60;
+                secondsPerQuestion = 15;
             }
             else if (difficulty == "Medium")
             {
-                secondsPerQuestion = 45;
+                secondsPerQuestion = 10;
             }
             else
             {
-                secondsPerQuestion = 30;   // Hard
+                secondsPerQuestion = 5;   // Hard
             }
 
             // Reset the score and load the questions for this category and difficulty
